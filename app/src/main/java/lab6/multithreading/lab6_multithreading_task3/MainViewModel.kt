@@ -10,12 +10,15 @@ import kotlinx.coroutines.launch
 import java.net.URL
 
 class MainViewModel: ViewModel() {
-    val bitmap = MutableLiveData<Bitmap>()
+    private val bitmap = MutableLiveData<Bitmap>()
 
-    fun downloadImage(URL: URL) {
+    fun downloadImage(URL: URL): MutableLiveData<Bitmap> {
         viewModelScope.launch(Dispatchers.IO) {
             val mIconVal = BitmapFactory.decodeStream(URL.openConnection().getInputStream())
-            bitmap.postValue(mIconVal)
+            viewModelScope.launch(Dispatchers.Main) {
+                bitmap.value = mIconVal
+            }
         }
+        return bitmap
     }
 }

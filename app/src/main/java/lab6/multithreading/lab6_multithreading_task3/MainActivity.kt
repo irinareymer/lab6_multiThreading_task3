@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val viewModel = MainViewModel()
-        viewModel.downloadImage(newURL)
-        viewModel.bitmap.observe(this) { value ->
+        val bitmap = viewModel.downloadImage(newURL)
+        bitmap.observe(this) { value ->
             if (value != null) {
                 binding.imageView.setImageBitmap(value)
             }
